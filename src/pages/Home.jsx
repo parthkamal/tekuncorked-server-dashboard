@@ -1,79 +1,132 @@
-import { useState } from "react";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const Home = (props) => {
+const Home = () => {
 
-    // const {_id, deviceName, password, temperature1, temperature2, tempearture3} = props.device;
-
-    // const [username, setUsername ] = useState(props.deviceName);
-
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
 
-    const handleSubmit = (event) => {
+    const [device, setDevice] = useState({});
+    const [temperature1, setTemperature1] = useState(0);
+    const [temperature2, setTemperature2] = useState(0);
+    const [temperature3, setTemperature3] = useState(0);
+
+    const {id} = useParams();
+    
+
+
+    async function getDevice() {
+
+        try {
+            const URL = `http://localhost:9000/device/${id}`;
+
+            const response = await axios.get(URL);
+            const data = response.data;
+            setDevice(data);
+            setTemperature1(data.temperature1);
+            setTemperature2(data.temperature2);
+            setTemperature3(data.temperature3);
+            console.log(data);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    const updateDevice = async (event) => {
         event.preventDefault();
+        console.log('update device run hua')
+        const location = device.location;
+        const name = device.name;
 
-        // check the values; 
+        const newDevice = { name, location, temperature1, temperature2, temperature3 };
 
-        let size_username = username.length;
-        let size_password = password.length;
+        try {
 
-        if (Math.min(size_password, size_username) > 0) {
-            alert('chalo ghusne ke to layak ho');
+            const URL = `http://localhost:9000/device/${device._id}`;
+            const message = await axios.put(URL, newDevice);
+            console.log(message);
+            alert(message.data.message);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-            // yaha par hm asynchronouse kam karenge, aur user_id get karlenge aur uski details. 
-        } else {
-            alert('Please fill in both fields.');
+    const deleteDevice = async (e) => {
+        e.preventDefault();
+
+        try {
+            const URL = `http://localhost:9000/device/${device._id}`;
+            const message = await axios.delete(URL);
+            console.log(message);
+            alert(message.data.message);
+            navigate(-1);
+        } catch (error) {
+            console.log(error);
+
         }
 
     }
 
+
+    const redirectLogin = (e) => {
+        e.preventDefault();
+        navigate('/');
+    }
+
+
+    useEffect(() => {
+        console.log('page render ho gya')
+        getDevice();
+    }, []);
+
+
+
+
+
     return (
         <div className='login-outer'>
-            <h2>{`welcome parth!`} </h2>
 
-            <form onSubmit={handleSubmit} className='login-form'>
-                
+            <h2>{`Welcome ${device.name}`} </h2>
+
+            <div>{`location: ${device.location}`}</div>
+            <form className='login-form'>
                 <div className='form-item'>
-                    <label htmlFor="username">temperature1:</label>
+                    <label htmlFor="temperature1">temperature1:</label>
                     <input
                         type="text"
-                        id="username"
-                        name="username"
-                        value={username}
-                        onChange={(e) => setUsername((username) => e.target.value)}
-                        placeholder='temperature1 here'
+                        value={temperature1}
+                        placeholder='temperature1'
+                        onChange={(e) => setTemperature1(prev => e.target.value)}
                     />
                 </div>
+
                 <div className='form-item'>
-                    <label htmlFor="username">temperature2:</label>
+                    <label htmlFor="temperature2">temperature2:</label>
                     <input
                         type="text"
-                        id="username"
-                        name="username"
-                        value={username}
-                        onChange={(e) => setUsername((username) => e.target.value)}
-                        placeholder='temperature2 here'
+                        value={temperature2}
+                        placeholder='temperature2'
+                        onChange={(e) => setTemperature2(prev => e.target.value)}
                     />
                 </div>
+
                 <div className='form-item'>
-                    <label htmlFor="username">temperature3:</label>
+                    <label htmlFor="temperature3">temperature3:</label>
                     <input
                         type="text"
-                        id="username"
-                        name="username"
-                        value={username}
-                        onChange={(e) => setUsername((username) => e.target.value)}
-                        placeholder='temperature3 here'
+                        value={temperature3}
+                        placeholder='temperature3'
+                        onChange={(e) => setTemperature3(prev => e.target.value)}
                     />
                 </div>
-                
-                <div className='home-form-btn'>
-                    <button type="submit">update</button>
-                    <button type="submit">delete device</button>
+
+                <div className='main-form-btn'>
+                    <button type="submit" onClick={updateDevice}>update </button>
+                    <button type="submit" onClick={deleteDevice}>delete device</button>
+                    <button type="submit" onClick={redirectLogin}>login</button>
 
                 </div>
             </form>

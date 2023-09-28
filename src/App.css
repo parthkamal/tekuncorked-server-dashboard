@@ -67,3 +67,20 @@ input {
     background-color: rgb(76, 125, 204);
     color: white;
 }
+
+
+.main-form-btn{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5px;
+}
+
+
+.main-form-btn button {
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    /* border-radius: 10px; */
+    background-color: rgb(76, 125, 204);
+    color: white;
+}
