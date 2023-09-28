@@ -1,3 +1,69 @@
-/* style for the css of the react application */
+/* style for the css of the react application ye wali static file nhi hai , aur iska kuhc ho bhi nhi skta */
 
 
+.login-outer {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+.login-form {
+    border: 1px solid blue;
+    height: 50%;
+    padding: 10px;
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+}
+
+.form-item {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 10px;
+    align-items: center;
+
+}
+
+.form-btn {
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.form-btn button {
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(76, 125, 204);
+    color: white;
+}
+
+input {
+    padding: 5px;
+}
+
+.home-form-btn{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5px;
+}
+
+.home-form-btn button {
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    /* border-radius: 10px; */
+    background-color: rgb(76, 125, 204);
+    color: white;
+}
